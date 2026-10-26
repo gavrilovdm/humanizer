@@ -2,7 +2,7 @@
 
 Родитель: [hub/projects/non-work/agents-ai](https://github.com/gavrilovdm/hub/blob/main/domains/projects/non-work/agents-ai/AGENTS.md)
 
-Связи: используется [vacancy-parser](https://github.com/gavrilovdm/vacancy-parser) (`apps/content`, git-зависимость по тегу) и плейбуком hub [write-text](https://github.com/gavrilovdm/hub/blob/main/playbooks/write-text.md)
+Связи: используется [social](https://github.com/gavrilovdm/social) (проверка постов), [vacancy-parser](https://github.com/gavrilovdm/vacancy-parser) (`apps/content`, git-зависимость по тегу) и плейбуком hub [write-text](https://github.com/gavrilovdm/hub/blob/main/playbooks/write-text.md)
 
 ## Что это
 
