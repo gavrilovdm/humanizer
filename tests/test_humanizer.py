@@ -1,3 +1,4 @@
+import time
 from pathlib import Path
 
 import pytest
@@ -51,3 +52,11 @@ def test_cli_fix_then_check(tmp_path: Path, capsys: pytest.CaptureFixture[str]) 
     out = capsys.readouterr().out
     assert f"{f}:3: заход-барабан" in out
     assert "тире" not in out
+
+
+def test_long_text_without_periods_stays_linear() -> None:
+    # Было квадратично: 45 000 символов — ~0.8 с, 180 000 — десятки секунд.
+    text = "isn't a, " * 20_000 + "not just " + "word, " * 20_000
+    started = time.monotonic()
+    check(text)
+    assert time.monotonic() - started < 1

@@ -33,16 +33,20 @@ _AI_WORDS = re.compile(
     r"it'?s worth noting|it'?s important to note)\b",
     re.I,
 )
+#: Сколько символов внутри фразы смотрит регулярка. Без потолка `[^.]*` на
+#: длинном тексте без точек даёт квадратичный перебор: 45 000 символов —
+#: почти секунда. Фраза длиннее не встречается, а признак ищется в одной.
+_SPAN = r"[^.]{0,200}"
 #: «It's not X, it's Y» / «not just X but Y» / «X rather than Y».
 _NEGATIVE_PARALLEL = re.compile(
-    r"\bnot (just|only|merely|about)\b[^.]*\b(but|it'?s)\b|"
-    r"\b(isn'?t|is not|wasn'?t)\b[^.]*[.,;]\s*(it'?s|it is)\b|\brather than\b",
+    rf"\bnot (just|only|merely|about)\b{_SPAN}\b(but|it'?s)\b|"
+    rf"\b(isn'?t|is not|wasn'?t)\b{_SPAN}[.,;]\s*(it'?s|it is)\b|\brather than\b",
     re.I,
 )
 #: Заходы-барабаны: объявляют, вместо того чтобы сказать.
 _DRUMROLL = re.compile(
     r"\b(here'?s (the thing|what|how|why)|the result\?|the key is|"
-    r"stop \w+[^.]*\. start\b|let that sink in|game changer)\b",
+    rf"stop \w+{_SPAN}\. start\b|let that sink in|game changer)\b",
     re.I,
 )
 #: Хвост «, highlighting the …» — пустой вывод в конце фразы.
@@ -55,7 +59,7 @@ _SMART = re.compile("[“”„‘’ …]")
 _DASH = re.compile("[—–]")
 
 #: Эмодзи, которые в живых текстах встретились только у ИИ («game-changer! 🚀»)
-#: и в саморекламе (👉). По разбору 216 живых комментариев, 2026-10-09.
+#: и в саморекламе (👉).
 BOT_EMOJI = frozenset({"🚀", "✨", "🔥", "💯", "🎯", "✅", "👉"})
 
 

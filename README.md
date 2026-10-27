@@ -10,6 +10,6 @@ Shared rules for text an LLM writes on a person's behalf, plus a tiny zero-depen
 The rules in words live in [RULES.md](RULES.md) (Russian). Problem messages are in Russian too.
 
 ```bash
-uvx --from git+https://github.com/gavrilovdm/humanizer humanizer fix draft.md
-uvx --from git+https://github.com/gavrilovdm/humanizer humanizer check draft.md
+uvx --from git+https://github.com/gavrilovdm/humanizer@v0.1.1 humanizer fix draft.md
+uvx --from git+https://github.com/gavrilovdm/humanizer@v0.1.1 humanizer check draft.md
 ```

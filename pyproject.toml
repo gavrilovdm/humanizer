@@ -1,6 +1,6 @@
 [project]
 name = "humanizer"
-version = "0.1.0"
+version = "0.1.1"
 description = "Signs of AI writing: fix typography, flag the rest for a rewrite"
 readme = "README.md"
 requires-python = ">=3.12"

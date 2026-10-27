@@ -5,8 +5,7 @@
 часть этих правил; остальное — на авторе.
 
 Источники: [Wikipedia: Signs of AI writing](https://en.wikipedia.org/wiki/Wikipedia:Signs_of_AI_writing),
-[разбор постов LinkedIn 2026](https://magicpost.in/blog/em-dash-ai-sign-linkedin),
-разбор 216 живых комментариев (2026-10-09, vacancy-parser).
+[разбор постов LinkedIn 2026](https://magicpost.in/blog/em-dash-ai-sign-linkedin).
 
 Правила про слова и обороты написаны для английского текста. Типографика
 (тире, кавычки) — тоже для английского: в русском длинное тире и «ёлочки» —
@@ -56,8 +55,8 @@
 ## Как пользоваться
 
 ```bash
-uvx --from git+https://github.com/gavrilovdm/humanizer humanizer fix draft.md    # типографика на месте + отчёт
-uvx --from git+https://github.com/gavrilovdm/humanizer humanizer check draft.md  # только отчёт, код 1 при проблемах
+uvx --from git+https://github.com/gavrilovdm/humanizer@v0.1.1 humanizer fix draft.md    # типографика на месте + отчёт
+uvx --from git+https://github.com/gavrilovdm/humanizer@v0.1.1 humanizer check draft.md  # только отчёт, код 1 при проблемах
 ```
 
 Из Python: `from humanizer import humanize, check, ai_signs`.
