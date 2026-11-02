@@ -60,3 +60,31 @@ def test_long_text_without_periods_stays_linear() -> None:
     started = time.monotonic()
     check(text)
     assert time.monotonic() - started < 1
+
+
+@pytest.mark.parametrize(
+    ("text", "problem"),
+    [
+        ("Важно отметить, что я работал с React пять лет.", "маркер"),
+        ("С большим интересом прочитал описание вашей роли.", "маркер"),
+        ("Хочу внести вклад в развитие продукта.", "маркер"),
+        ("Это не просто сервис, а целая платформа.", "не просто"),
+        ("Настроил CI за неделю, что подчёркивает мою гибкость.", "подчёркивает"),
+        ("Вот в чём дело: команда не успевала с релизами.", "барабан"),
+    ],
+)
+def test_ai_signs_russian(text: str, problem: str) -> None:
+    assert any(problem in found for found in ai_signs(text))
+
+
+@pytest.mark.parametrize(
+    "text",
+    [
+        "Пять лет пишу на React, последний год делаю агентов на LangGraph.",
+        "Отметить в задаче важно только срок, остальное я уточню сам.",
+        "Настроил деплой в Kubernetes и сократил время релиза вдвое.",
+        "Был не только разработчиком на проекте.",
+    ],
+)
+def test_ordinary_russian_is_clean(text: str) -> None:
+    assert ai_signs(text) == []

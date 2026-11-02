@@ -54,6 +54,25 @@ _ING_TAIL = re.compile(
     r",\s*(highlighting|underscoring|emphasizing|showcasing|reflecting|ensuring|fostering)\b",
     re.I,
 )
+#: То же для русского текста: штампы и вода, которых в живой речи почти нет.
+_AI_WORDS_RU = re.compile(
+    r"\b((?:важно|стоит|следует) отметить|в современном мире|в динамично развивающ\w+|"
+    r"игра\w+ (?:ключев\w+|важн\w+) роль|широк\w+ спектр\w*|богат\w+ опыт\w*|"
+    r"уникальн\w+ возможност\w+|неотъемлем\w+ част\w+|с большим интересом|"
+    r"заинтересовала ваша вакансия|ваша вакансия заинтересовала|идеально подхож\w+|"
+    r"идеальн\w+ кандидат\w*|внести (?:свой |ценный )?вклад|ценн\w+ вклад\w*|"
+    r"страстно увлеч[её]н\w*)\b",
+    re.I,
+)
+#: «Не просто X, а Y» / «не только X, но и Y».
+_NEGATIVE_PARALLEL_RU = re.compile(
+    r"\bне просто\b[^.]{0,200}[,—-]\s*а\b|\bне только\b[^.]{0,200},\s*но и\b", re.I
+)
+_DRUMROLL_RU = re.compile(
+    r"(?<!\w)(и вот что важно|вот в ч[её]м дело|результат\?|ключ в том)", re.I
+)
+#: Хвост «, что подчёркивает …» — пустой вывод в конце фразы.
+_ING_TAIL_RU = re.compile(r",\s*(?:что\s+)?(?:подч[её]ркива\w+|свидетельствует)\b", re.I)
 _TYPOGRAPHY = str.maketrans({"“": '"', "”": '"', "„": '"', "‘": "'", "’": "'", " ": " "})
 _SMART = re.compile("[“”„‘’ …]")
 _DASH = re.compile("[—–]")
@@ -93,14 +112,18 @@ def ai_signs(text: str) -> list[str]:
     а не гарантия, что текст звучит как человек.
     """
     problems = []
-    if m := _AI_WORDS.search(text):
+    if m := _AI_WORDS.search(text) or _AI_WORDS_RU.search(text):
         problems.append(f"слово-маркер ИИ: {m.group(0)!r}")
     if _NEGATIVE_PARALLEL.search(text):
         problems.append("конструкция «not X, it's Y»")
-    if m := _DRUMROLL.search(text):
+    if _NEGATIVE_PARALLEL_RU.search(text):
+        problems.append("конструкция «не просто X, а Y»")
+    if m := _DRUMROLL.search(text) or _DRUMROLL_RU.search(text):
         problems.append(f"заход-барабан: {m.group(0)!r}")
     if _ING_TAIL.search(text):
         problems.append("хвост «, highlighting …»")
+    if _ING_TAIL_RU.search(text):
+        problems.append("хвост «, что подчёркивает …»")
     if text.count("!") > 1:
         problems.append("много восклицаний")
     return problems
